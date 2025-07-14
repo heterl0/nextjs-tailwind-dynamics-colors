@@ -5,7 +5,6 @@ import { useCallback, useState } from "react";
 
 const PalettePage = () => {
   const [currentTheme, setCurrentTheme] = useState<string>("#2B7FFF");
-
   const handleFormatValue = (value: string) => {
     if (value.startsWith("#")) {
       return value;
@@ -204,12 +203,12 @@ const PalettePage = () => {
   }, [currentTheme]);
 
   return (
-    <div className="max-w-screen-lg mx-auto min-h-screen">
+    <div className="mx-auto min-h-screen max-w-screen-lg">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <h1 className="text-2xl font-bold">Palette</h1>
         </div>
-        <div className="flex justify-between flex-row gap-2">
+        <div className="flex flex-row justify-between gap-2">
           <div className="flex flex-row gap-2">
             <input
               type="text"
@@ -226,132 +225,132 @@ const PalettePage = () => {
         </div>
         <div className="grid grid-cols-5 gap-2">
           <div className="flex flex-col gap-2">
-            <div className="w-full h-10 bg-primary-100 text-primary-900">
+            <div className="bg-primary-100 text-primary-900 h-10 w-full">
               primary 100
             </div>
-            <div className="w-full h-10 bg-primary-200 text-primary-900">
+            <div className="bg-primary-200 text-primary-900 h-10 w-full">
               primary 200
             </div>
-            <div className="w-full h-10 bg-primary-300 text-primary-900">
+            <div className="bg-primary-300 text-primary-900 h-10 w-full">
               primary 300
             </div>
-            <div className="w-full h-10 bg-primary-400 text-primary-900">
+            <div className="bg-primary-400 text-primary-900 h-10 w-full">
               primary 400
             </div>
-            <div className="w-full h-10 bg-primary-500 text-primary-100">
+            <div className="bg-primary-500 text-primary-100 h-10 w-full">
               #000000
             </div>
-            <div className="w-full h-10 bg-primary-600 text-primary-100">
+            <div className="bg-primary-600 text-primary-100 h-10 w-full">
               #000000
             </div>
-            <div className="w-full h-10 bg-primary-700 text-primary-100">
+            <div className="bg-primary-700 text-primary-100 h-10 w-full">
               #000000
             </div>
-            <div className="w-full h-10 bg-primary-800 text-primary-100">
+            <div className="bg-primary-800 text-primary-100 h-10 w-full">
               #000000
             </div>
-            <div className="w-full h-10 bg-primary-900 text-primary-100">
-              #000000
-            </div>
-          </div>
-          <div className="flex flex-col gap-2">
-            <div className="w-full h-10 bg-success-100 text-success-900">
-              #000000
-            </div>
-            <div className="w-full h-10 bg-success-200 text-success-900">
-              #000000
-            </div>
-            <div className="w-full h-10 bg-success-300 text-success-900">
-              #000000
-            </div>
-            <div className="w-full h-10 bg-success-400 text-success-900">
-              #000000
-            </div>
-            <div className="w-full h-10 bg-success-500 text-success-100">
-              #000000
-            </div>
-            <div className="w-full h-10 bg-success-600 text-success-100">
-              #000000
-            </div>
-            <div className="w-full h-10 bg-success-700 text-success-100">
-              #000000
-            </div>
-            <div className="w-full h-10 bg-success-800 text-success-100">
-              #000000
-            </div>
-            <div className="w-full h-10 bg-success-900 text-success-100">
+            <div className="bg-primary-900 text-primary-100 h-10 w-full">
               #000000
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <div className="w-full h-10 bg-info-100 text-info-900">#000000</div>
-            <div className="w-full h-10 bg-info-200 text-info-900">#000000</div>
-            <div className="w-full h-10 bg-info-300 text-info-900">#000000</div>
-            <div className="w-full h-10 bg-info-400 text-info-900">#000000</div>
-            <div className="w-full h-10 bg-info-500 text-info-100">#000000</div>
-            <div className="w-full h-10 bg-info-600 text-info-100">#000000</div>
-            <div className="w-full h-10 bg-info-700 text-info-100">#000000</div>
+            <div className="bg-success-100 text-success-900 h-10 w-full">
+              #000000
+            </div>
+            <div className="bg-success-200 text-success-900 h-10 w-full">
+              #000000
+            </div>
+            <div className="bg-success-300 text-success-900 h-10 w-full">
+              #000000
+            </div>
+            <div className="bg-success-400 text-success-900 h-10 w-full">
+              #000000
+            </div>
+            <div className="bg-success-500 text-success-100 h-10 w-full">
+              #000000
+            </div>
+            <div className="bg-success-600 text-success-100 h-10 w-full">
+              #000000
+            </div>
+            <div className="bg-success-700 text-success-100 h-10 w-full">
+              #000000
+            </div>
+            <div className="bg-success-800 text-success-100 h-10 w-full">
+              #000000
+            </div>
+            <div className="bg-success-900 text-success-100 h-10 w-full">
+              #000000
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="bg-info-100 text-info-900 h-10 w-full">#000000</div>
+            <div className="bg-info-200 text-info-900 h-10 w-full">#000000</div>
+            <div className="bg-info-300 text-info-900 h-10 w-full">#000000</div>
+            <div className="bg-info-400 text-info-900 h-10 w-full">#000000</div>
+            <div className="bg-info-500 text-info-100 h-10 w-full">#000000</div>
+            <div className="bg-info-600 text-info-100 h-10 w-full">#000000</div>
+            <div className="bg-info-700 text-info-100 h-10 w-full">#000000</div>
 
-            <div className="w-full h-10 bg-info-800 text-info-100">#000000</div>
-            <div className="w-full h-10 bg-info-900 text-info-100">#000000</div>
+            <div className="bg-info-800 text-info-100 h-10 w-full">#000000</div>
+            <div className="bg-info-900 text-info-100 h-10 w-full">#000000</div>
           </div>
           <div className="flex flex-col gap-2">
-            <div className="w-full h-10 bg-warning-100 text-warning-900">
+            <div className="bg-warning-100 text-warning-900 h-10 w-full">
               #000000
             </div>
-            <div className="w-full h-10 bg-warning-200 text-warning-900">
+            <div className="bg-warning-200 text-warning-900 h-10 w-full">
               #000000
             </div>
-            <div className="w-full h-10 bg-warning-300 text-warning-900">
-              #000000
-            </div>
-
-            <div className="w-full h-10 bg-warning-400 text-warning-900">
-              #000000
-            </div>
-            <div className="w-full h-10 bg-warning-500 text-warning-100">
-              #000000
-            </div>
-            <div className="w-full h-10 bg-warning-600 text-warning-100">
-              #000000
-            </div>
-            <div className="w-full h-10 bg-warning-700 text-warning-100">
-              #000000
-            </div>
-            <div className="w-full h-10 bg-warning-800 text-warning-100">
-              #000000
-            </div>
-            <div className="w-full h-10 bg-warning-900 text-warning-100">
-              #000000
-            </div>
-          </div>
-          <div className="flex flex-col gap-2">
-            <div className="w-full h-10 bg-danger-100 text-danger-900">
+            <div className="bg-warning-300 text-warning-900 h-10 w-full">
               #000000
             </div>
 
-            <div className="w-full h-10 bg-danger-200 text-danger-900">
+            <div className="bg-warning-400 text-warning-900 h-10 w-full">
               #000000
             </div>
-            <div className="w-full h-10 bg-danger-300 text-danger-900">
+            <div className="bg-warning-500 text-warning-100 h-10 w-full">
               #000000
             </div>
-            <div className="w-full h-10 bg-danger-400 text-danger-900">
+            <div className="bg-warning-600 text-warning-100 h-10 w-full">
               #000000
             </div>
-            <div className="w-full h-10 bg-danger-500 text-danger-100">
+            <div className="bg-warning-700 text-warning-100 h-10 w-full">
               #000000
             </div>
-            <div className="w-full h-10 bg-danger-600 text-danger-100">
+            <div className="bg-warning-800 text-warning-100 h-10 w-full">
               #000000
             </div>
-            <div className="w-full h-10 bg-danger-700 text-danger-100">
+            <div className="bg-warning-900 text-warning-100 h-10 w-full">
               #000000
             </div>
-            <div className="w-full h-10 bg-danger-800 text-danger-100">
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="bg-danger-100 text-danger-900 h-10 w-full">
               #000000
             </div>
-            <div className="w-full h-10 bg-danger-900 text-danger-100">
+
+            <div className="bg-danger-200 text-danger-900 h-10 w-full">
+              #000000
+            </div>
+            <div className="bg-danger-300 text-danger-900 h-10 w-full">
+              #000000
+            </div>
+            <div className="bg-danger-400 text-danger-900 h-10 w-full">
+              #000000
+            </div>
+            <div className="bg-danger-500 text-danger-100 h-10 w-full">
+              #000000
+            </div>
+            <div className="bg-danger-600 text-danger-100 h-10 w-full">
+              #000000
+            </div>
+            <div className="bg-danger-700 text-danger-100 h-10 w-full">
+              #000000
+            </div>
+            <div className="bg-danger-800 text-danger-100 h-10 w-full">
+              #000000
+            </div>
+            <div className="bg-danger-900 text-danger-100 h-10 w-full">
               #000000
             </div>
           </div>

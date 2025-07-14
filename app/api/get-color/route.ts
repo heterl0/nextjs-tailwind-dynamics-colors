@@ -1,4 +1,4 @@
-import { generateColorScale, generateTailwindScale } from "@/lib/utils";
+import { generateTailwindScale } from "@/lib/utils";
 import { EvaColor } from "@/theme/color";
 import { NextRequest, NextResponse } from "next/server";
 import tinycolor from "tinycolor2";

@@ -1,0 +1,12 @@
+# Ignore artifacts:
+build
+coverage
+
+# Ignore files:
+.next
+node_modules
+.env
+.env.local
+pnpm-lock.yaml
+pnpm-workspace.yaml
+README.md
