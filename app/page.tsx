@@ -63,19 +63,19 @@ export default function ColorThemeShowcase() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4 blue-">
+      <div className="blue- container mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4">Color Theme Showcase</h1>
-          <p className="text-gray-600 mb-6">
+        <div className="mb-8 text-center">
+          <h1 className="mb-4 text-4xl font-bold">Color Theme Showcase</h1>
+          <p className="mb-6 text-gray-600">
             Pick a color theme to see how all components adapt to your selection
           </p>
 
           {/* Theme Picker */}
-          <Card className="max-w-2xl mx-auto mb-8">
+          <Card className="mx-auto mb-8 max-w-2xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Palette className="w-5 h-5" />
+                <Palette className="h-5 w-5" />
                 Choose Color Theme
               </CardTitle>
               <CardDescription>
@@ -83,12 +83,12 @@ export default function ColorThemeShowcase() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                 {Object.entries(colorThemes).map(([key, theme]) => (
                   <button
                     key={key}
                     onClick={() => handleThemeSelect(theme.color)}
-                    className={`p-4 rounded-lg border-2 transition-all hover:scale-105 ${
+                    className={`rounded-lg border-2 p-4 transition-all hover:scale-105 ${
                       currentColor?.primary[4] === theme.color
                         ? "border-primary-500 bg-primary-50"
                         : "border-gray-200 hover:border-gray-300"
@@ -96,7 +96,7 @@ export default function ColorThemeShowcase() {
                   >
                     <div className="flex flex-col items-center gap-2">
                       <div
-                        className="w-8 h-8 rounded-full"
+                        className="h-8 w-8 rounded-full"
                         style={{ backgroundColor: `${theme.color}` }}
                       />
                       <span className="text-sm font-medium">{key}</span>
@@ -136,7 +136,7 @@ export default function ColorThemeShowcase() {
                   Danger
                 </Button>
               </div>
-              <div className="flex flex-wrap gap-4 mt-4">
+              <div className="mt-4 flex flex-wrap gap-4">
                 <Button
                   variant="outline"
                   className="border-primary-500 text-primary-500 hover:bg-primary-50"
@@ -193,7 +193,7 @@ export default function ColorThemeShowcase() {
                 </Badge>
                 <Badge className="bg-danger-500 text-white">Danger Badge</Badge>
               </div>
-              <div className="flex flex-wrap gap-4 mt-4">
+              <div className="mt-4 flex flex-wrap gap-4">
                 <Badge
                   variant="outline"
                   className="border-primary-500 text-primary-500"
@@ -239,7 +239,7 @@ export default function ColorThemeShowcase() {
             <CardContent>
               <div className="space-y-4">
                 <Alert className="border-primary-200 bg-primary-50">
-                  <Info className="h-4 w-4 text-primary-500" />
+                  <Info className="text-primary-500 h-4 w-4" />
                   <AlertTitle className="text-primary-700">
                     Primary Alert
                   </AlertTitle>
@@ -249,7 +249,7 @@ export default function ColorThemeShowcase() {
                 </Alert>
 
                 <Alert className="border-success-200 bg-success-50">
-                  <CheckCircle className="h-4 w-4 text-success-500" />
+                  <CheckCircle className="text-success-500 h-4 w-4" />
                   <AlertTitle className="text-success-700">
                     Success Alert
                   </AlertTitle>
@@ -259,7 +259,7 @@ export default function ColorThemeShowcase() {
                 </Alert>
 
                 <Alert className="border-info-200 bg-info-50">
-                  <Info className="h-4 w-4 text-info-500" />
+                  <Info className="text-info-500 h-4 w-4" />
                   <AlertTitle className="text-info-700">Info Alert</AlertTitle>
                   <AlertDescription className="text-info-600">
                     This is an informational alert with helpful information.
@@ -267,7 +267,7 @@ export default function ColorThemeShowcase() {
                 </Alert>
 
                 <Alert className="border-warning-200 bg-warning-50">
-                  <AlertTriangle className="h-4 w-4 text-warning-500" />
+                  <AlertTriangle className="text-warning-500 h-4 w-4" />
                   <AlertTitle className="text-warning-700">
                     Warning Alert
                   </AlertTitle>
@@ -277,7 +277,7 @@ export default function ColorThemeShowcase() {
                 </Alert>
 
                 <Alert className="border-danger-200 bg-danger-50">
-                  <XCircle className="h-4 w-4 text-danger-500" />
+                  <XCircle className="text-danger-500 h-4 w-4" />
                   <AlertTitle className="text-danger-700">
                     Danger Alert
                   </AlertTitle>
@@ -297,8 +297,8 @@ export default function ColorThemeShowcase() {
               <CardDescription>Cards with custom color accents</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <Card className="border-l-4 border-l-primary-500">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <Card className="border-l-primary-500 border-l-4">
                   <CardHeader>
                     <CardTitle className="text-primary-700">
                       Primary Card
@@ -311,7 +311,7 @@ export default function ColorThemeShowcase() {
                   </CardContent>
                 </Card>
 
-                <Card className="border-l-4 border-l-success-500">
+                <Card className="border-l-success-500 border-l-4">
                   <CardHeader>
                     <CardTitle className="text-success-700">
                       Success Card
@@ -324,7 +324,7 @@ export default function ColorThemeShowcase() {
                   </CardContent>
                 </Card>
 
-                <Card className="border-l-4 border-l-info-500">
+                <Card className="border-l-info-500 border-l-4">
                   <CardHeader>
                     <CardTitle className="text-info-700">Info Card</CardTitle>
                   </CardHeader>
@@ -335,7 +335,7 @@ export default function ColorThemeShowcase() {
                   </CardContent>
                 </Card>
 
-                <Card className="border-l-4 border-l-warning-500">
+                <Card className="border-l-warning-500 border-l-4">
                   <CardHeader>
                     <CardTitle className="text-warning-700">
                       Warning Card
@@ -348,7 +348,7 @@ export default function ColorThemeShowcase() {
                   </CardContent>
                 </Card>
 
-                <Card className="border-l-4 border-l-danger-500">
+                <Card className="border-l-danger-500 border-l-4">
                   <CardHeader>
                     <CardTitle className="text-danger-700">
                       Danger Card
@@ -380,7 +380,7 @@ export default function ColorThemeShowcase() {
               {currentColor?.primary[4] && (
                 <div className="flex items-center gap-4">
                   <div
-                    className="w-12 h-12 rounded-lg"
+                    className="h-12 w-12 rounded-lg"
                     style={{
                       backgroundColor: `${currentColor?.primary[4]}`,
                     }}
