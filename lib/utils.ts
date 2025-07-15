@@ -69,81 +69,80 @@ const interpolate = (start: number, end: number, factor: number): number => {
 };
 
 /**
- * Generates a 9-step color scale with a Tailwind CSS-like distribution.
- *
- * @param baseColor The base color (HEX, RGB, etc.), which will serve as the '500' shade.
- * @returns An array of 9 color hex strings, from '100' (lightest) to '900' (darkest).
+ * Calculates a compensation factor based on the hue's inherent luminosity.
+ * Yellows are naturally bright, blues are naturally dark.
+ * Returns a value from -1 (dark) to 1 (bright).
  */
-export const generateTailwindScale = (baseColor: string): string[] => {
+const getLuminosityFactor = (hue: number): number => {
+  if (hue >= 70 && hue <= 180) return 0.8; // Bright Greens/Cyans
+  if (hue > 50 && hue < 70) return 1; // Brightest Yellows
+  if (hue >= 200 && hue <= 280) return -1; // Darkest Blues/Purples
+  if (hue > 280 && hue <= 330) return -0.5; // Dark Magentas
+  return 0;
+};
+
+/**
+ * Generates a 9-step, perceptually uniform color scale based on advanced color principles.
+ *
+ * @param baseColor The base color (HEX, RGB, etc.), serving as the '500' shade.
+ * @returns An array of 9 color hex strings ('100' to '900').
+ */
+export const generateAdvancedScale = (baseColor: string): string[] => {
   const color = tinycolor(baseColor);
   if (!color.isValid()) {
     throw new Error(`Invalid base color provided: ${baseColor}`);
   }
 
   const baseHsl = color.toHsl();
+  const luminosityFactor = getLuminosityFactor(baseHsl.h);
 
-  // --- 1. Define Endpoints ---
-  // Define the characteristics of the lightest and darkest shades.
-  // These are the "targets" we will interpolate towards from the base color.
-
+  // --- 1. Define Dynamic Endpoints with Luminosity Compensation ---
   const lightTargetHsl = {
     h: baseHsl.h,
-    s: 0.1, // Drastically reduce saturation for the lightest shade
-    l: 0.97, // Very high lightness
+    s: baseHsl.s * 1.1 + 0.1, // Boost saturation at the lightest end
+    l: 0.98 - luminosityFactor * 0.03, // Make lighter if base hue is dark, and vice versa
   };
 
-  // For the dark target, we apply "smart hue shifting" for better tones.
   let darkTargetHue = baseHsl.h;
-  if (baseHsl.h >= 40 && baseHsl.h <= 70) {
-    // Yellows -> Amber/Orange
-    darkTargetHue = 35;
-  }
-  if (baseHsl.h >= 15 && baseHsl.h < 40) {
-    // Oranges -> Deeper Orange
-    darkTargetHue = 25;
-  }
-  if (baseHsl.h > 340 || baseHsl.h < 15) {
-    // Reds -> Richer Reds
-    darkTargetHue = 355;
-  }
+  // Apply smart hue shifting for richer dark tones
+  if (baseHsl.h >= 40 && baseHsl.h <= 70) darkTargetHue = 35; // Yellows -> Amber
+  if (baseHsl.h > 340 || baseHsl.h < 15) darkTargetHue = 355; // Reds -> Deeper Reds
 
   const darkTargetHsl = {
     h: darkTargetHue,
-    s: baseHsl.s > 0.1 ? 0.9 : 0.1, // Boost saturation for richness, unless it's already a grayscale color
-    l: 0.12, // Very low lightness
+    s: baseHsl.s * 1.1 + 0.1, // Also boost saturation at the darkest end
+    l: 0.1 + luminosityFactor * 0.05, // Make darker if base hue is bright, and vice versa
   };
 
-  // --- 2. Define Interpolation Steps ---
-  // These are the percentages to mix the target color with the base color.
-  // e.g., shade '400' is 20% of the way from the base to the light target.
-  const lightMixFactors = [0.85, 0.65, 0.4, 0.2]; // For 100, 200, 300, 400
-  const darkMixFactors = [0.2, 0.4, 0.6, 0.85]; // For 600, 700, 800, 900
+  // --- 2. Define "U-Shaped" Saturation Curve ---
+  // The saturation will dip in the middle and rise at the extremes.
+  // These are multipliers for the interpolated saturation value.
+  const saturationCurve = [1.3, 1.2, 1.1, 1, 1, 1, 1.1, 1.2, 1.3];
 
-  // --- 3. Generate the Palette ---
+  // --- 3. Generate the Palette by Interpolating ---
   const scale: string[] = [];
+  const mixFactors = [0.9, 0.75, 0.55, 0.25, 0, 0.25, 0.5, 0.7, 0.85];
 
-  // Generate lighter shades (100-400)
-  lightMixFactors.forEach((factor) => {
-    const newHsl = {
-      h: interpolate(baseHsl.h, lightTargetHsl.h, factor),
-      s: interpolate(baseHsl.s, lightTargetHsl.s, factor),
-      l: interpolate(baseHsl.l, lightTargetHsl.l, factor),
-    };
-    scale.push(tinycolor(newHsl).toHexString());
-  });
+  for (let i = 0; i < 9; i++) {
+    // Shade 500 is the base color
+    if (i === 4) {
+      scale.push(color.toHexString());
+      continue;
+    }
 
-  // Add the base color (500)
-  scale.push(color.toHexString());
+    const isLighter = i < 4;
+    const factor = mixFactors[i];
+    const target = isLighter ? lightTargetHsl : darkTargetHsl;
 
-  // Generate darker shades (600-900)
-  darkMixFactors.forEach((factor) => {
-    const newHsl = {
-      h: interpolate(baseHsl.h, darkTargetHsl.h, factor),
-      s: interpolate(baseHsl.s, darkTargetHsl.s, factor),
-      l: interpolate(baseHsl.l, darkTargetHsl.l, factor),
-    };
-    scale.push(tinycolor(newHsl).toHexString());
-  });
+    const h = interpolate(baseHsl.h, target.h, factor);
+    let s = interpolate(baseHsl.s, target.s, factor);
+    const l = interpolate(baseHsl.l, target.l, factor);
+
+    // Apply the U-shaped saturation adjustment
+    s = Math.min(1, s * saturationCurve[i]);
+
+    scale.push(tinycolor({ h, s, l }).toHexString());
+  }
 
   return scale;
 };

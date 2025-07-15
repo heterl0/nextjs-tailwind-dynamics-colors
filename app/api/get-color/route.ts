@@ -1,4 +1,4 @@
-import { generateTailwindScale } from "@/lib/utils";
+import { generateAdvancedScale } from "@/lib/utils";
 import { EvaColor } from "@/theme/color";
 import { NextRequest, NextResponse } from "next/server";
 import tinycolor from "tinycolor2";
@@ -22,12 +22,9 @@ export async function GET(request: NextRequest) {
 
   try {
     const primaryHsl = tinycolor(`#${color}`).toHsl();
-    console.log(primaryHsl);
-
     const rotateHue = (h: number, deg: number) => (h + deg + 360) % 360;
 
     const primaryHex = tinycolor(`#${color}`).toHexString();
-    console.log(primaryHex);
 
     const successHex = tinycolor({
       ...primaryHsl,
@@ -56,11 +53,11 @@ export async function GET(request: NextRequest) {
 
     // --- Generate Scales for Semantic Colors ---
     const palette: EvaColor = {
-      primary: generateTailwindScale(primaryHex),
-      success: generateTailwindScale(successHex),
-      info: generateTailwindScale(infoHex),
-      warning: generateTailwindScale(warningHex),
-      danger: generateTailwindScale(dangerHex),
+      primary: generateAdvancedScale(primaryHex),
+      success: generateAdvancedScale(successHex),
+      info: generateAdvancedScale(infoHex),
+      warning: generateAdvancedScale(warningHex),
+      danger: generateAdvancedScale(dangerHex),
     };
 
     return NextResponse.json(palette);
