@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
   try {
     const primaryHsl = tinycolor(`#${color}`).toHsl();
     const rotateHue = (h: number, deg: number) => (h + deg + 360) % 360;
-
+    console.log(primaryHsl.h);
     const primaryHex = tinycolor(`#${color}`).toHexString();
 
     const successHex = tinycolor({
