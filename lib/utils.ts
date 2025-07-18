@@ -146,3 +146,30 @@ export const generateAdvancedScale = (baseColor: string): string[] => {
 
   return scale;
 };
+
+export const isHueColorFallIntoSemantic = (hue: number): boolean => {
+  // - **Danger Zone (Red):** Hp​ is between 345∘ and 15∘
+  if (hue >= 345 && hue <= 15) return true;
+  // - **Warning Zone (Yellow/Orange):** Hp​ is between 30∘ and 60∘
+  if (hue >= 30 && hue <= 60) return true;
+  // - **Success Zone (Green):** Hp​ is between 90∘ and 150∘
+  if (hue >= 90 && hue <= 150) return true;
+  // - **Info Zone (Blue):** Hp​ is between 190∘ and 250∘
+  if (hue >= 190 && hue <= 250) return true;
+  return false;
+};
+
+type SemanticColor = "danger" | "warning" | "success" | "info";
+
+export const whichHueColorFallIntoSemantic = (
+  hue: number
+): SemanticColor | undefined => {
+  // - **Danger Zone (Red):** Hp​ is between 345∘ and 15∘
+  if (hue >= 345 && hue <= 15) return "danger";
+  // - **Warning Zone (Yellow/Orange):** Hp​ is between 30∘ and 60∘
+  if (hue >= 30 && hue <= 60) return "warning";
+  // - **Success Zone (Green):** Hp​ is between 90∘ and 150∘
+  if (hue >= 90 && hue <= 150) return "success";
+  // - **Info Zone (Blue):** Hp​ is between 190∘ and 250∘
+  if (hue >= 190 && hue <= 250) return "info";
+};
