@@ -1,4 +1,8 @@
-import { generateAdvancedScale } from "@/lib/utils";
+import {
+  calculateShiftColor,
+  generateAdvancedScale,
+  rotateColorHex,
+} from "@/lib/utils";
 import { EvaColor } from "@/theme/color";
 import { NextRequest, NextResponse } from "next/server";
 import tinycolor from "tinycolor2";
@@ -22,42 +26,18 @@ export async function GET(request: NextRequest) {
 
   try {
     const primaryHsl = tinycolor(`#${color}`).toHsl();
-    const rotateHue = (h: number, deg: number) => (h + deg + 360) % 360;
     console.log(primaryHsl.h);
     const primaryHex = tinycolor(`#${color}`).toHexString();
 
-    const successHex = tinycolor({
-      ...primaryHsl,
-      h: rotateHue(primaryHsl.h, 100),
-      s: 0.65,
-      l: 0.5,
-    }).toHexString();
-    const infoHex = tinycolor({
-      ...primaryHsl,
-      h: rotateHue(primaryHsl.h, 180),
-      s: 0.8,
-      l: 0.55,
-    }).toHexString();
-    const warningHex = tinycolor({
-      ...primaryHsl,
-      h: rotateHue(primaryHsl.h, 60),
-      s: 0.95,
-      l: 0.5,
-    }).toHexString();
-    const dangerHex = tinycolor({
-      ...primaryHsl,
-      h: rotateHue(primaryHsl.h, -30),
-      s: 0.8,
-      l: 0.5,
-    }).toHexString();
+    const shift = calculateShiftColor(primaryHsl.h);
 
     // --- Generate Scales for Semantic Colors ---
     const palette: EvaColor = {
       primary: generateAdvancedScale(primaryHex),
-      success: generateAdvancedScale(successHex),
-      info: generateAdvancedScale(infoHex),
-      warning: generateAdvancedScale(warningHex),
-      danger: generateAdvancedScale(dangerHex),
+      success: generateAdvancedScale(rotateColorHex(shift, "success")),
+      info: generateAdvancedScale(rotateColorHex(shift, "info")),
+      warning: generateAdvancedScale(rotateColorHex(shift, "warning")),
+      danger: generateAdvancedScale(rotateColorHex(shift, "danger")),
     };
 
     return NextResponse.json(palette);

@@ -173,3 +173,68 @@ export const whichHueColorFallIntoSemantic = (
   // - **Info Zone (Blue):** Hp​ is between 190∘ and 250∘
   if (hue >= 190 && hue <= 250) return "info";
 };
+
+export const calculateShiftColor = (hue: number): number => {
+  const semanticColor: SemanticColor | undefined =
+    whichHueColorFallIntoSemantic(hue);
+  // don't shift
+  if (!semanticColor) return 0;
+  switch (semanticColor) {
+    case "danger":
+      return hue - 10;
+    case "warning":
+      return hue - 45;
+    case "success":
+      return hue - 135;
+    case "info":
+      return hue - 210;
+  }
+};
+
+export const rotateColorHex = (shift: number, color: SemanticColor): string => {
+  let hue = 0;
+  switch (color) {
+    case "danger":
+      hue = shift + 10;
+      if (hue < 0) {
+        hue = 360 + hue;
+      }
+      console.log(hue);
+
+      return tinycolor({
+        h: hue,
+        s: 0.8,
+        l: 0.5,
+      }).toHexString();
+    case "warning":
+      hue = shift + 45;
+      if (hue < 0) {
+        hue = 360 + hue;
+      }
+      return tinycolor({
+        h: hue,
+        s: 0.95,
+        l: 0.5,
+      }).toHexString();
+    case "success":
+      hue = shift + 135;
+      if (hue < 0) {
+        hue = 360 + hue;
+      }
+      return tinycolor({
+        h: hue,
+        s: 0.65,
+        l: 0.5,
+      }).toHexString();
+    case "info":
+      hue = shift + 210;
+      if (hue < 0) {
+        hue = 360 + hue;
+      }
+      return tinycolor({
+        h: hue,
+        s: 0.8,
+        l: 0.5,
+      }).toHexString();
+  }
+};
