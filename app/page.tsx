@@ -30,7 +30,6 @@ import {
   Eye,
 } from "lucide-react";
 import { useColorContext } from "@/theme/use-color-context";
-import { EvaColor } from "@/theme/color";
 import { cn } from "@/lib/utils";
 
 const colorThemes = {
@@ -51,9 +50,7 @@ const colorThemes = {
 export default function DynamicColorShowcase() {
   const [currentTheme, setCurrentTheme] = useState<string>("2b7fff");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [generatedColors, setGeneratedColors] = useState<EvaColor | null>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const { setPrimaryColor } = useColorContext();
+  const { setPrimaryColor, currentColor } = useColorContext();
 
   const handleFormatValue = (value: string) => {
     if (value.startsWith("#")) {
@@ -62,32 +59,36 @@ export default function DynamicColorShowcase() {
     return `#${value}`;
   };
 
-  const handleGenerate = useCallback(async () => {
-    setIsGenerating(true);
-    try {
-      const response = await fetch(
-        `/api/get-color?theme=${currentTheme.replace("#", "")}`
-      );
-      const colors: EvaColor = await response.json();
-      setGeneratedColors(colors);
+  // const handleGenerate = useCallback(async () => {
+  //   setIsGenerating(true);
+  //   try {
+  //     const response = await fetch(
+  //       `/api/get-color?theme=${currentTheme.replace("#", "")}`
+  //     );
+  //     const colors: EvaColor = await response.json();
+  //     setGeneratedColors(colors);
 
-      // Apply colors to CSS variables
-      if (document) {
-        Object.entries(colors).forEach(([colorType, colorArray]) => {
-          colorArray.forEach((color, index) => {
-            document.documentElement.style.setProperty(
-              `--color-${colorType}-${(index + 1) * 100}`,
-              color
-            );
-          });
-        });
-      }
-    } catch (error) {
-      console.error("Error generating colors:", error);
-    } finally {
-      setIsGenerating(false);
-    }
-  }, [currentTheme]);
+  //     // Apply colors to CSS variables
+  //     if (document) {
+  //       Object.entries(colors).forEach(([colorType, colorArray]) => {
+  //         colorArray.forEach((color, index) => {
+  //           document.documentElement.style.setProperty(
+  //             `--color-${colorType}-${(index + 1) * 100}`,
+  //             color
+  //           );
+  //         });
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error generating colors:", error);
+  //   } finally {
+  //     setIsGenerating(false);
+  //   }
+  // }, [currentTheme]);
+
+  const handleGenerate = useCallback(() => {
+    setPrimaryColor(currentTheme);
+  }, [currentTheme, setPrimaryColor]);
 
   const handleThemeSelect = (color: string) => {
     setIsDialogOpen(true);
@@ -97,8 +98,7 @@ export default function DynamicColorShowcase() {
   const handleConfirmTheme = useCallback(() => {
     setIsDialogOpen(false);
     setPrimaryColor(currentTheme);
-    handleGenerate();
-  }, [currentTheme, setPrimaryColor, handleGenerate]);
+  }, [currentTheme, setPrimaryColor]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -168,12 +168,8 @@ export default function DynamicColorShowcase() {
                       className="focus:border-primary-500 flex-1 rounded-md border border-gray-300 px-3 py-2 focus:outline-none"
                     />
                   </div>
-                  <Button
-                    onClick={handleGenerate}
-                    disabled={isGenerating}
-                    className="w-full"
-                  >
-                    {isGenerating ? "Generating..." : "Generate Palette"}
+                  <Button onClick={handleGenerate} className="w-full">
+                    {"Generate Palette"}
                   </Button>
                 </div>
               </div>
@@ -182,7 +178,7 @@ export default function DynamicColorShowcase() {
         </Card>
 
         {/* Generated Palette Display */}
-        {generatedColors && (
+        {currentColor && (
           <Card className="mx-auto mb-8 max-w-6xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -195,35 +191,33 @@ export default function DynamicColorShowcase() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-5 gap-4">
-                {Object.entries(generatedColors).map(
-                  ([colorType, colorArray]) => (
-                    <div key={colorType} className="flex flex-col gap-2">
-                      <h3 className="text-center text-sm font-semibold text-gray-700 capitalize">
-                        {colorType}
-                      </h3>
-                      {colorArray.map((color, index) => (
-                        <div
-                          key={index}
-                          className={cn(
-                            `flex h-12 w-full items-center justify-center rounded-md text-base font-bold ${
-                              index > 4 ? "text-white" : "text-gray-900"
-                            }`
-                          )}
-                          style={{ backgroundColor: color }}
-                        >
-                          {color}
-                        </div>
-                      ))}
-                    </div>
-                  )
-                )}
+                {Object.entries(currentColor).map(([colorType, colorArray]) => (
+                  <div key={colorType} className="flex flex-col gap-2">
+                    <h3 className="text-center text-sm font-semibold text-gray-700 capitalize">
+                      {colorType}
+                    </h3>
+                    {colorArray.map((color, index) => (
+                      <div
+                        key={index}
+                        className={cn(
+                          `flex h-12 w-full items-center justify-center rounded-md text-base font-bold ${
+                            index > 4 ? "text-white" : "text-gray-900"
+                          }`
+                        )}
+                        style={{ backgroundColor: color }}
+                      >
+                        {color}
+                      </div>
+                    ))}
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
         )}
 
         {/* Component Showcase */}
-        {generatedColors && (
+        {currentColor && (
           <div className="grid gap-8">
             {/* Buttons Section */}
             <Card>
