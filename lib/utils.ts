@@ -198,9 +198,10 @@ export const calculateShiftColor = (hue: number): number => {
   if (!semanticColor) return 0;
   switch (semanticColor) {
     case "danger":
-      return hue - 10;
+      if (hue >= 345) return (-hue + 345) * 2;
+      return hue * 2;
     case "warning":
-      return hue - 45;
+      return (hue - 45) * 2;
     case "success":
       return hue - 135;
     case "info":
@@ -212,7 +213,7 @@ export const rotateColorHex = (shift: number, color: SemanticColor): string => {
   let hue = 0;
   switch (color) {
     case "danger":
-      hue = shift + 10;
+      hue = shift / 2;
       if (hue < 0) {
         hue = 360 + hue;
       }
@@ -222,7 +223,7 @@ export const rotateColorHex = (shift: number, color: SemanticColor): string => {
         l: 0.5,
       }).toHexString();
     case "warning":
-      hue = shift + 45;
+      hue = shift / 2 + 35;
       if (hue < 0) {
         hue = 360 + hue;
       }
