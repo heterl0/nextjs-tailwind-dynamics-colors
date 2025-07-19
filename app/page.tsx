@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,6 +28,7 @@ import {
   XCircle,
   Palette,
   Eye,
+  Download,
 } from "lucide-react";
 import { useColorContext } from "@/theme/use-color-context";
 import { cn } from "@/lib/utils";
@@ -50,6 +51,8 @@ const colorThemes = {
 export default function DynamicColorShowcase() {
   const [currentTheme, setCurrentTheme] = useState<string>("2b7fff");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(true);
+
   const { setPrimaryColor, currentColor } = useColorContext();
 
   const handleFormatValue = (value: string) => {
@@ -58,33 +61,6 @@ export default function DynamicColorShowcase() {
     }
     return `#${value}`;
   };
-
-  // const handleGenerate = useCallback(async () => {
-  //   setIsGenerating(true);
-  //   try {
-  //     const response = await fetch(
-  //       `/api/get-color?theme=${currentTheme.replace("#", "")}`
-  //     );
-  //     const colors: EvaColor = await response.json();
-  //     setGeneratedColors(colors);
-
-  //     // Apply colors to CSS variables
-  //     if (document) {
-  //       Object.entries(colors).forEach(([colorType, colorArray]) => {
-  //         colorArray.forEach((color, index) => {
-  //           document.documentElement.style.setProperty(
-  //             `--color-${colorType}-${(index + 1) * 100}`,
-  //             color
-  //           );
-  //         });
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error generating colors:", error);
-  //   } finally {
-  //     setIsGenerating(false);
-  //   }
-  // }, [currentTheme]);
 
   const handleGenerate = useCallback(() => {
     setPrimaryColor(currentTheme);
@@ -99,6 +75,20 @@ export default function DynamicColorShowcase() {
     setIsDialogOpen(false);
     setPrimaryColor(currentTheme);
   }, [currentTheme, setPrimaryColor]);
+
+  const handleDownloadColor = useCallback(() => {
+    const fileJson = JSON.stringify(currentColor, null, 2);
+    const blob = new Blob([fileJson], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "color.json";
+    a.click();
+  }, [currentColor]);
+
+  useEffect(() => {
+    setIsGenerating(false);
+  }, [currentColor]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -165,12 +155,24 @@ export default function DynamicColorShowcase() {
                       onChange={(e) =>
                         setCurrentTheme(e.target.value.replace("#", ""))
                       }
-                      className="focus:border-primary-500 flex-1 rounded-md border border-gray-300 px-3 py-2 focus:outline-none"
+                      className="focus:border-primary-500 flex-1 cursor-pointer rounded-md border border-gray-300 px-3 py-2 focus:outline-none"
                     />
                   </div>
-                  <Button onClick={handleGenerate} className="w-full">
-                    {"Generate Palette"}
-                  </Button>
+                  <div className="flex flex-row gap-2">
+                    <Button
+                      className="flex-1"
+                      onClick={handleGenerate}
+                      disabled={isGenerating}
+                    >
+                      {isGenerating ? "Generating..." : "Generate Palette"}
+                    </Button>
+                    <Button
+                      onClick={handleDownloadColor}
+                      className="w-fit flex-none cursor-pointer"
+                    >
+                      <Download />
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -178,7 +180,7 @@ export default function DynamicColorShowcase() {
         </Card>
 
         {/* Generated Palette Display */}
-        {currentColor && (
+        {currentColor.primary.length > 0 && !isGenerating && (
           <Card className="mx-auto mb-8 max-w-6xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -217,7 +219,7 @@ export default function DynamicColorShowcase() {
         )}
 
         {/* Component Showcase */}
-        {currentColor && (
+        {currentColor.primary.length > 0 && !isGenerating && (
           <div className="grid gap-8">
             {/* Buttons Section */}
             <Card>
