@@ -62,10 +62,26 @@ export const generateColorScale = (baseColor: string): string[] => {
 };
 
 /**
- * A helper function to interpolate between two values.
+ * A helper function to interpolate between two hue values, taking the shortest path around the color wheel.
  */
-const interpolate = (start: number, end: number, factor: number): number => {
-  return start + (end - start) * factor;
+const interpolateHue = (start: number, end: number, factor: number): number => {
+  // Normalize hues to 0-360 range
+  start = start % 360;
+  end = end % 360;
+
+  // Calculate the difference, considering the shortest path
+  let diff = end - start;
+
+  // If the difference is greater than 180, we need to go the other way
+  if (diff > 180) {
+    diff -= 360;
+  } else if (diff < -180) {
+    diff += 360;
+  }
+
+  // Interpolate and normalize to 0-360
+  const result = (start + diff * factor) % 360;
+  return result < 0 ? result + 360 : result;
 };
 
 /**
@@ -94,6 +110,7 @@ export const generateAdvancedScale = (baseColor: string): string[] => {
   }
 
   const baseHsl = color.toHsl();
+
   const luminosityFactor = getLuminosityFactor(baseHsl.h);
 
   // --- 1. Define Dynamic Endpoints with Luminosity Compensation ---
@@ -134,9 +151,9 @@ export const generateAdvancedScale = (baseColor: string): string[] => {
     const factor = mixFactors[i];
     const target = isLighter ? lightTargetHsl : darkTargetHsl;
 
-    const h = interpolate(baseHsl.h, target.h, factor);
-    let s = interpolate(baseHsl.s, target.s, factor);
-    const l = interpolate(baseHsl.l, target.l, factor);
+    const h = interpolateHue(baseHsl.h, target.h, factor);
+    let s = interpolateHue(baseHsl.s, target.s, factor);
+    const l = interpolateHue(baseHsl.l, target.l, factor);
 
     // Apply the U-shaped saturation adjustment
     s = Math.min(1, s * saturationCurve[i]);
@@ -199,8 +216,6 @@ export const rotateColorHex = (shift: number, color: SemanticColor): string => {
       if (hue < 0) {
         hue = 360 + hue;
       }
-      console.log(hue);
-
       return tinycolor({
         h: hue,
         s: 0.8,

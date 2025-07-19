@@ -26,7 +26,6 @@ export async function GET(request: NextRequest) {
 
   try {
     const primaryHsl = tinycolor(`#${color}`).toHsl();
-    console.log(primaryHsl.h);
     const primaryHex = tinycolor(`#${color}`).toHexString();
 
     const shift = calculateShiftColor(primaryHsl.h);
