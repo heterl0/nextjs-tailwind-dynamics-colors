@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { useColorContext } from "@/theme/use-color-context";
 import { EvaColor } from "@/theme/color";
+import { cn } from "@/lib/utils";
 
 const colorThemes = {
   blue: {
@@ -134,7 +135,7 @@ export default function DynamicColorShowcase() {
                       onClick={() => handleThemeSelect(theme.color)}
                       className={`rounded-lg border-2 p-4 transition-all hover:scale-105 ${
                         currentTheme === theme.color
-                          ? "border-primary-500 bg-primary-50"
+                          ? "border-primary-500 bg-primary-100"
                           : "border-gray-200 hover:border-gray-300"
                       }`}
                     >
@@ -203,9 +204,11 @@ export default function DynamicColorShowcase() {
                       {colorArray.map((color, index) => (
                         <div
                           key={index}
-                          className={`flex h-12 w-full items-center justify-center rounded-md text-xs font-medium ${
-                            index >= 4 ? "text-white" : "text-gray-900"
-                          }`}
+                          className={cn(
+                            `flex h-12 w-full items-center justify-center rounded-md text-base font-bold ${
+                              index > 4 ? "text-white" : "text-gray-900"
+                            }`
+                          )}
                           style={{ backgroundColor: color }}
                         >
                           {color}
@@ -251,31 +254,31 @@ export default function DynamicColorShowcase() {
                 <div className="mt-4 flex flex-wrap gap-4">
                   <Button
                     variant="outline"
-                    className="border-primary-500 text-primary-500 hover:bg-primary-50"
+                    className="border-primary-500 text-primary-500 hover:bg-primary-100"
                   >
                     Primary Outline
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-success-500 text-success-500 hover:bg-success-50"
+                    className="border-success-500 text-success-500 hover:bg-success-100"
                   >
                     Success Outline
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-info-500 text-info-500 hover:bg-info-50"
+                    className="border-info-500 text-info-500 hover:bg-info-100"
                   >
                     Info Outline
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-warning-500 text-warning-500 hover:bg-warning-50"
+                    className="border-warning-500 text-warning-500 hover:bg-warning-100"
                   >
                     Warning Outline
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-danger-500 text-danger-500 hover:bg-danger-50"
+                    className="border-danger-500 text-danger-500 hover:bg-danger-100"
                   >
                     Danger Outline
                   </Button>
@@ -352,8 +355,8 @@ export default function DynamicColorShowcase() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <Alert className="border-primary-200 bg-primary-50">
-                    <Info className="text-primary-500 h-4 w-4" />
+                  <Alert className="border-primary-200 bg-primary-100">
+                    <Info className="text-primary-500! h-4 w-4" />
                     <AlertTitle className="text-primary-700">
                       Primary Alert
                     </AlertTitle>
@@ -362,8 +365,8 @@ export default function DynamicColorShowcase() {
                     </AlertDescription>
                   </Alert>
 
-                  <Alert className="border-success-200 bg-success-50">
-                    <CheckCircle className="text-success-500 h-4 w-4" />
+                  <Alert className="border-success-200 bg-success-100">
+                    <CheckCircle className="text-success-500! h-4 w-4" />
                     <AlertTitle className="text-success-700">
                       Success Alert
                     </AlertTitle>
@@ -372,8 +375,8 @@ export default function DynamicColorShowcase() {
                     </AlertDescription>
                   </Alert>
 
-                  <Alert className="border-info-200 bg-info-50">
-                    <Info className="text-info-500 h-4 w-4" />
+                  <Alert className="border-info-200 bg-info-100">
+                    <Info className="text-info-500! h-4 w-4" />
                     <AlertTitle className="text-info-700">
                       Info Alert
                     </AlertTitle>
@@ -382,8 +385,8 @@ export default function DynamicColorShowcase() {
                     </AlertDescription>
                   </Alert>
 
-                  <Alert className="border-warning-200 bg-warning-50">
-                    <AlertTriangle className="text-warning-500 h-4 w-4" />
+                  <Alert className="border-warning-200 bg-warning-100">
+                    <AlertTriangle className="text-warning-500! h-4 w-4" />
                     <AlertTitle className="text-warning-700">
                       Warning Alert
                     </AlertTitle>
@@ -392,8 +395,8 @@ export default function DynamicColorShowcase() {
                     </AlertDescription>
                   </Alert>
 
-                  <Alert className="border-danger-200 bg-danger-50">
-                    <XCircle className="text-danger-500 h-4 w-4" />
+                  <Alert className="border-danger-200 bg-danger-100">
+                    <XCircle className="text-danger-500! h-4 w-4" />
                     <AlertTitle className="text-danger-700">
                       Danger Alert
                     </AlertTitle>
