@@ -1,6 +1,7 @@
 import {
   calculateShiftColor,
   generateAdvancedScale,
+  isHueColorFallIntoSemantic,
   rotateColorHex,
 } from "@/lib/utils";
 import { EvaColor } from "@/theme/color";
@@ -28,18 +29,40 @@ export async function GET(request: NextRequest) {
     const primaryHsl = tinycolor(`#${color}`).toHsl();
     const primaryHex = tinycolor(`#${color}`).toHexString();
 
-    const shift = calculateShiftColor(primaryHsl.h);
+    if (isHueColorFallIntoSemantic(primaryHsl.h)) {
+      const shift = calculateShiftColor(primaryHsl.h);
+      console.log("Type: 1");
+      console.log(shift);
 
-    // --- Generate Scales for Semantic Colors ---
-    const palette: EvaColor = {
-      primary: generateAdvancedScale(primaryHex),
-      success: generateAdvancedScale(rotateColorHex(shift, "success")),
-      info: generateAdvancedScale(rotateColorHex(shift, "info")),
-      warning: generateAdvancedScale(rotateColorHex(shift, "warning")),
-      danger: generateAdvancedScale(rotateColorHex(shift, "danger")),
-    };
+      // --- Generate Scales for Semantic Colors ---
+      const palette: EvaColor = {
+        primary: generateAdvancedScale(primaryHex),
+        success: generateAdvancedScale(rotateColorHex(shift, "success")),
+        info: generateAdvancedScale(rotateColorHex(shift, "info")),
+        warning: generateAdvancedScale(rotateColorHex(shift, "warning")),
+        danger: generateAdvancedScale(rotateColorHex(shift, "danger")),
+      };
 
-    return NextResponse.json(palette);
+      return NextResponse.json(palette);
+    } else {
+      console.log("Type: 2");
+
+      const s = primaryHsl.s;
+      const l = primaryHsl.l;
+      const success = tinycolor({ s, l, h: 135 }).toHexString();
+      const info = tinycolor({ s, l, h: 210 }).toHexString();
+      const warning = tinycolor({ s, l, h: 45 }).toHexString();
+      const danger = tinycolor({ s, l, h: 10 }).toHexString();
+
+      const palette: EvaColor = {
+        primary: generateAdvancedScale(primaryHex),
+        success: generateAdvancedScale(success),
+        info: generateAdvancedScale(info),
+        warning: generateAdvancedScale(warning),
+        danger: generateAdvancedScale(danger),
+      };
+      return NextResponse.json(palette);
+    }
   } catch (error) {
     return NextResponse.json({
       message: "Error generating color palette.",
