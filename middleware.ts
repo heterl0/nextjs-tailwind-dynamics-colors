@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 // Use Vercel's Edge Runtime for better performance
-export const runtime = "experimental-edge";
+export const runtime = "edge";
 
 // In-memory store for rate limiting (use Redis in production)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
