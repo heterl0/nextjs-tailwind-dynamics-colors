@@ -29,10 +29,9 @@ export async function GET(request: NextRequest) {
     const primaryHsl = tinycolor(`#${color}`).toHsl();
     const primaryHex = tinycolor(`#${color}`).toHexString();
 
+    // If the color fall into the semantic then shifting the palate color.
     if (isHueColorFallIntoSemantic(primaryHsl.h)) {
       const shift = calculateShiftColor(primaryHsl.h);
-      console.log("Type: 1");
-      console.log(shift);
 
       // --- Generate Scales for Semantic Colors ---
       const palette: EvaColor = {
@@ -45,8 +44,7 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json(palette);
     } else {
-      console.log("Type: 2");
-
+      // Create color based on saturation and lightness of primary color
       const s = primaryHsl.s;
       const l = primaryHsl.l;
       const success = tinycolor({ s, l, h: 135 }).toHexString();
