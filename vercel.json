@@ -31,10 +31,5 @@
       ]
     }
   ],
-  "rewrites": [
-    {
-      "source": "/api/get-color",
-      "destination": "/api/get-color"
-    }
-  ]
+  "rewrites": []
 }
