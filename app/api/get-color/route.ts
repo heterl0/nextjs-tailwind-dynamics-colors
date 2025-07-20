@@ -37,8 +37,19 @@ function validateColorInput(color: string): {
 // Request throttling for this specific endpoint
 const requestTimestamps = new Map<string, number>();
 const THROTTLE_WINDOW = 1000; // 1 second between requests per IP
+const CLEANUP_INTERVAL = THROTTLE_WINDOW * 10; // Cleanup entries older than 10x throttle window
+
+function cleanupRequestTimestamps(): void {
+  const now = Date.now();
+  for (const [clientIP, timestamp] of requestTimestamps.entries()) {
+    if (now - timestamp > CLEANUP_INTERVAL) {
+      requestTimestamps.delete(clientIP);
+    }
+  }
+}
 
 function isThrottled(clientIP: string): boolean {
+  cleanupRequestTimestamps();
   const now = Date.now();
   const lastRequest = requestTimestamps.get(clientIP);
 
