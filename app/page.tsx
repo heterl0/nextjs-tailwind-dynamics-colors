@@ -202,8 +202,8 @@ export default function DynamicColorShowcase() {
                       <div
                         key={index}
                         className={cn(
-                          `flex h-12 w-full items-center justify-center rounded-md text-base font-bold ${
-                            index > 4 ? "text-white" : "text-gray-900"
+                          `flex h-12 w-full items-center justify-center rounded-md text-xs font-bold md:text-base ${
+                            index > 3 ? "text-white" : "text-gray-900"
                           }`
                         )}
                         style={{ backgroundColor: color }}
