@@ -1,0 +1,13 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  version="1.1"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="64"
+  height="64"
+  viewBox="0 0 64 64"
+  fill="none"
+>
+  <rect x="12" y="8" width="16" height="48" rx="2" fill="oklch(0.1385 0.0019 196.94)" />
+  <rect x="8.00049" y="40.0001" width="16" height="48" rx="2" transform="rotate(-90 8.00049 40.0001)" fill="oklch(0.1385 0.0019 196.94)" />
+  <rect x="36" y="8" width="16" height="48" rx="2" fill="oklch(0.1385 0.0019 196.94)" />
+</svg>
