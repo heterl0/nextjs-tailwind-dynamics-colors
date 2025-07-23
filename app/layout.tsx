@@ -16,18 +16,18 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Dynamic Color Generate",
   description:
-    "Dynamic Color Generate was inspired by EvaColor Picker, that generate semantic colors from primary color.",
+    "Dynamic Color Generate was inspired by EvaColor Picker, that generates semantic colors from primary color.",
   openGraph: {
     title: "Dynamic Color Generate",
     description:
-      "Dynamic Color Generate was inspired by EvaColor Picker, that generate semantic colors from primary color.",
+      "Dynamic Color Generate was inspired by EvaColor Picker, that generates semantic colors from primary color.",
     images: ["/projects/portfolio.webp"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Dynamic Color Generate",
     description:
-      "Dynamic Color Generate was inspired by EvaColor Picker, that generate semantic colors from primary color.",
+      "Dynamic Color Generate was inspired by EvaColor Picker, that generates semantic colors from primary color.",
     images: ["/projects/portfolio.webp"],
   },
   alternates: {
