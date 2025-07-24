@@ -21,14 +21,14 @@ export const metadata: Metadata = {
     title: "Dynamic Color Generate",
     description:
       "Dynamic Color Generate was inspired by EvaColor Picker, that generates semantic colors from primary color.",
-    images: ["/projects/portfolio.webp"],
+    images: ["/dynamic-colors.webp"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Dynamic Color Generate",
     description:
       "Dynamic Color Generate was inspired by EvaColor Picker, that generates semantic colors from primary color.",
-    images: ["/projects/portfolio.webp"],
+    images: ["/dynamic-colors.webp"],
   },
   alternates: {
     canonical: "https://dynamic-color-generate.heterl0.live",
