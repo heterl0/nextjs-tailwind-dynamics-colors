@@ -155,7 +155,7 @@ export default function DynamicColorShowcase() {
                       onChange={(e) =>
                         setCurrentTheme(e.target.value.replace("#", ""))
                       }
-                      className="focus:border-primary-500 flex-1 cursor-pointer rounded-md border border-gray-300 px-3 py-2 focus:outline-none"
+                      className="focus:border-primary-500 flex-1 rounded-md border border-gray-300 px-3 py-2 focus:outline-none"
                     />
                   </div>
                   <div className="flex flex-row gap-2">
