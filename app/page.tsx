@@ -123,7 +123,7 @@ export default function DynamicColorShowcase() {
                     <button
                       key={key}
                       onClick={() => handleThemeSelect(theme.color)}
-                      className={`rounded-lg border-2 p-4 transition-all hover:scale-105 ${
+                      className={`cursor-pointer rounded-lg border-2 p-4 transition-all hover:scale-105 ${
                         currentTheme === theme.color
                           ? "border-primary-500 bg-primary-100"
                           : "border-gray-200 hover:border-gray-300"
@@ -160,7 +160,7 @@ export default function DynamicColorShowcase() {
                   </div>
                   <div className="flex flex-row gap-2">
                     <Button
-                      className="flex-1"
+                      className="flex-1 cursor-pointer"
                       onClick={handleGenerate}
                       disabled={isGenerating}
                     >
@@ -515,8 +515,13 @@ export default function DynamicColorShowcase() {
               </div>
             </div>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleConfirmTheme}>
+              <AlertDialogCancel className="cursor-pointer">
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                className="cursor-pointer"
+                onClick={handleConfirmTheme}
+              >
                 Generate Palette
               </AlertDialogAction>
             </AlertDialogFooter>

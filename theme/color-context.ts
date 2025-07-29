@@ -3,7 +3,10 @@ import { EvaColor } from "./color";
 
 export const ColorContext = createContext<{
   currentColor: EvaColor;
-  setPrimaryColor: (color: string) => void;
+  setPrimaryColor: (color: string) => Promise<void>;
+  error: string | null;
+  clearError: () => void;
+  isLoading: boolean;
 }>({
   currentColor: {
     primary: [],
@@ -12,5 +15,8 @@ export const ColorContext = createContext<{
     success: [],
     warning: [],
   },
-  setPrimaryColor: () => {},
+  setPrimaryColor: async () => {},
+  error: null,
+  clearError: () => {},
+  isLoading: false,
 });
