@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { useColorContext } from "@/theme/use-color-context";
 import { cn } from "@/lib/utils";
+import { ColorCodeDialog } from "@/components/ui/color-code-dialog";
 
 const colorThemes = {
   blue: {
@@ -183,13 +184,19 @@ export default function DynamicColorShowcase() {
         {currentColor.primary.length > 0 && !isGenerating && (
           <Card className="mx-auto mb-8 max-w-6xl">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Eye className="h-5 w-5" />
-                Generated Color Palette
-              </CardTitle>
-              <CardDescription>
-                Complete semantic color palette generated from your base color
-              </CardDescription>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <Eye className="h-5 w-5" />
+                    Generated Color Palette
+                  </CardTitle>
+                  <CardDescription>
+                    Complete semantic color palette generated from your base
+                    color
+                  </CardDescription>
+                </div>
+                <ColorCodeDialog currentColor={currentColor} />
+              </div>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-5 gap-4">
