@@ -38,6 +38,7 @@ export function ColorCodeDialog({
       case "oklch":
         // Convert to OKLCH-like format using HSL as approximation
         // Note: This is an approximation since tinycolor2 doesn't support OKLCH
+        // .
         const oklchValues = tc.toHsl();
         return `oklch(${Math.round(oklchValues.l * 100)}% ${Math.round(oklchValues.s * 100)} ${Math.round(oklchValues.h)}deg)`;
       default:
