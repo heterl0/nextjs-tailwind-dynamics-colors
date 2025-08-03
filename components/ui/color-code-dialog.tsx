@@ -162,34 +162,6 @@ ${generateCSSVariables()}
               <code>{generateCode()}</code>
             </pre>
           </div>
-
-          {/* Color Preview */}
-          <div className="space-y-4">
-            <h4 className="font-semibold">Color Preview</h4>
-            <div className="grid grid-cols-5 gap-4">
-              {Object.entries(currentColor).map(([colorType, colorArray]) => (
-                <div key={colorType} className="space-y-2">
-                  <h5 className="text-sm font-medium text-gray-700 capitalize">
-                    {colorType}
-                  </h5>
-                  <div className="space-y-1">
-                    {colorArray.map((color, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center gap-2 rounded border p-2"
-                        style={{ backgroundColor: color }}
-                      >
-                        <div className="h-4 w-4 rounded border border-gray-300 bg-white"></div>
-                        <span className="font-mono text-xs">
-                          {convertColor(color, format)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </DialogContent>
     </Dialog>
