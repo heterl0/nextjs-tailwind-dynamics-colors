@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Code, Copy, Check } from "lucide-react";
+import Color from "colorjs.io";
 
 interface ColorCodeDialogProps {
   currentColor: EvaColor;
@@ -38,9 +39,9 @@ export function ColorCodeDialog({
       case "oklch":
         // Convert to OKLCH-like format using HSL as approximation
         // Note: This is an approximation since tinycolor2 doesn't support OKLCH
-        // .
-        const oklchValues = tc.toHsl();
-        return `oklch(${Math.round(oklchValues.l * 100)}% ${Math.round(oklchValues.s * 100)} ${Math.round(oklchValues.h)}deg)`;
+        const tempColor = new Color(color);
+        const oklch = tempColor.to("oklch");
+        return `oklch(${oklch.coords[0].toFixed(4)} ${oklch.coords[1].toFixed(4)} ${oklch.coords[2].toFixed(4)}${oklch.alpha !== 1 ? ` ${Number(oklch.alpha.toFixed(4)) * 100}%` : ""})`;
       default:
         return color;
     }
