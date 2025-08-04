@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Code, Copy, Check } from "lucide-react";
 import Color from "colorjs.io";
+import { ScrollArea } from "./scroll-area";
 
 interface ColorCodeDialogProps {
   currentColor: EvaColor;
@@ -105,64 +106,71 @@ ${generateCSSVariables()}
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-h-[80vh] max-w-4xl overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Code className="h-5 w-5" />
-            EvaColor Code
-          </DialogTitle>
-          <DialogDescription>
-            Generated EvaColor object with color format options
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="max-w-5xl! p-0">
+        <ScrollArea className="h-full max-h-[80vh] w-full space-y-4 overflow-hidden p-4">
+          <div className="space-y-4">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Code className="h-5 w-5" />
+                EvaColor Code
+              </DialogTitle>
+              <DialogDescription>
+                Generated EvaColor object with color format options
+              </DialogDescription>
+            </DialogHeader>
 
-        <div className="space-y-4">
-          {/* Format Selector */}
-          <div className="flex gap-2">
-            <Button
-              variant={format === "hex" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setFormat("hex")}
-            >
-              HEX
-            </Button>
-            <Button
-              variant={format === "hsl" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setFormat("hsl")}
-            >
-              HSL
-            </Button>
-            <Button
-              variant={format === "oklch" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setFormat("oklch")}
-            >
-              OKLCH
-            </Button>
-          </div>
+            <div className="space-y-4">
+              {/* Format Selector */}
+              <div className="flex gap-2">
+                <Button
+                  variant={format === "hex" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setFormat("hex")}
+                  className="cursor-pointer"
+                >
+                  HEX
+                </Button>
+                <Button
+                  variant={format === "hsl" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setFormat("hsl")}
+                  className="cursor-pointer"
+                >
+                  HSL
+                </Button>
+                <Button
+                  variant={format === "oklch" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setFormat("oklch")}
+                  className="cursor-pointer"
+                >
+                  OKLCH
+                </Button>
+              </div>
 
-          {/* Code Display */}
-          <div className="relative">
-            <div className="absolute top-2 right-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={copyToClipboard}
-                className="h-8 w-8 p-0"
-              >
-                {copied ? (
-                  <Check className="h-4 w-4 text-green-500" />
-                ) : (
-                  <Copy className="h-4 w-4" />
-                )}
-              </Button>
+              {/* Code Display */}
+              <div className="relative">
+                <div className="absolute top-2 right-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={copyToClipboard}
+                    className="h-8 w-8 p-0"
+                  >
+                    {copied ? (
+                      <Check className="h-4 w-4 text-green-500" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+                <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
+                  <code>{generateCode()}</code>
+                </pre>
+              </div>
             </div>
-            <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-              <code>{generateCode()}</code>
-            </pre>
           </div>
-        </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
