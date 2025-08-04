@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { useColorContext } from "@/theme/use-color-context";
 import { cn } from "@/lib/utils";
+import { ColorCodeDialog } from "@/components/ui/color-code-dialog";
 
 const colorThemes = {
   blue: {
@@ -123,7 +124,7 @@ export default function DynamicColorShowcase() {
                     <button
                       key={key}
                       onClick={() => handleThemeSelect(theme.color)}
-                      className={`rounded-lg border-2 p-4 transition-all hover:scale-105 ${
+                      className={`cursor-pointer rounded-lg border-2 p-4 transition-all hover:scale-105 ${
                         currentTheme === theme.color
                           ? "border-primary-500 bg-primary-100"
                           : "border-gray-200 hover:border-gray-300"
@@ -155,12 +156,12 @@ export default function DynamicColorShowcase() {
                       onChange={(e) =>
                         setCurrentTheme(e.target.value.replace("#", ""))
                       }
-                      className="focus:border-primary-500 flex-1 cursor-pointer rounded-md border border-gray-300 px-3 py-2 focus:outline-none"
+                      className="focus:border-primary-500 flex-1 rounded-md border border-gray-300 px-3 py-2 focus:outline-none"
                     />
                   </div>
                   <div className="flex flex-row gap-2">
                     <Button
-                      className="flex-1"
+                      className="flex-1 cursor-pointer"
                       onClick={handleGenerate}
                       disabled={isGenerating}
                     >
@@ -183,13 +184,19 @@ export default function DynamicColorShowcase() {
         {currentColor.primary.length > 0 && !isGenerating && (
           <Card className="mx-auto mb-8 max-w-6xl">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Eye className="h-5 w-5" />
-                Generated Color Palette
-              </CardTitle>
-              <CardDescription>
-                Complete semantic color palette generated from your base color
-              </CardDescription>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <Eye className="h-5 w-5" />
+                    Generated Color Palette
+                  </CardTitle>
+                  <CardDescription>
+                    Complete semantic color palette generated from your base
+                    color
+                  </CardDescription>
+                </div>
+                <ColorCodeDialog currentColor={currentColor} />
+              </div>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-5 gap-4">
@@ -515,8 +522,13 @@ export default function DynamicColorShowcase() {
               </div>
             </div>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleConfirmTheme}>
+              <AlertDialogCancel className="cursor-pointer">
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                className="cursor-pointer"
+                onClick={handleConfirmTheme}
+              >
                 Generate Palette
               </AlertDialogAction>
             </AlertDialogFooter>

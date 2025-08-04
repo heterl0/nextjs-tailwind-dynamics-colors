@@ -14,7 +14,6 @@ const interpolateHue = (start: number, end: number, factor: number): number => {
   start = start % 360;
   end = end % 360;
 
-  // Calculate the difference, considering the shortest path
   let diff = end - start;
 
   // If the difference is greater than 180, we need to go the other way
