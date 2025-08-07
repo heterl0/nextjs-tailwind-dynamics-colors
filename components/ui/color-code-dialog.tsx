@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Code, Copy, Check } from "lucide-react";
 import Color from "colorjs.io";
 import { ScrollArea } from "./scroll-area";
+import CodeBlockClient from "../code-block/code-block-client";
 
 interface ColorCodeDialogProps {
   currentColor: EvaColor;
@@ -164,9 +165,10 @@ ${generateCSSVariables()}
                     )}
                   </Button>
                 </div>
-                <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-                  <code>{generateCode()}</code>
-                </pre>
+                <CodeBlockClient
+                  className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100"
+                  code={generateCode()}
+                />
               </div>
             </div>
           </div>
