@@ -16,6 +16,7 @@ import { Code, Copy, Check } from "lucide-react";
 import Color from "colorjs.io";
 import { ScrollArea } from "./scroll-area";
 import CodeBlockClient from "../code-block/code-block-client";
+import { toast } from "sonner";
 
 interface ColorCodeDialogProps {
   currentColor: EvaColor;
@@ -97,12 +98,45 @@ const evaColor: EvaColor = ${JSON.stringify(convertedColors, null, 2)};`;
   };
 
   const copyToClipboard = async (language: "css" | "typescript") => {
+    const text = generateCode(language);
+
     try {
-      await navigator.clipboard.writeText(generateCode(language));
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      // Check if clipboard API is available
+      if (
+        navigator.clipboard &&
+        typeof navigator.clipboard.writeText === "function"
+      ) {
+        await navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        toast.success("Code copied to clipboard!");
+        return;
+      }
+
+      // Fallback for older browsers or insecure contexts
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      textArea.style.top = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        document.execCommand("copy");
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        toast.success("Code copied to clipboard!");
+      } catch (fallbackErr) {
+        console.error("Fallback copy failed:", fallbackErr);
+        toast.error("Copy failed. Please manually select and copy the code.");
+      } finally {
+        document.body.removeChild(textArea);
+      }
     } catch (err) {
       console.error("Failed to copy to clipboard:", err);
+      toast.error("Copy failed. Please manually select and copy the code.");
     }
   };
 
