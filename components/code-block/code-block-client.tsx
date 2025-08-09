@@ -18,9 +18,14 @@ export default function CodeBlockClient({ code, className, language }: Props) {
         .default;
       hljs.registerLanguage("css", cssLang);
       hljs.registerLanguage("typescript", tsLang);
-      if (ref.current) hljs.highlightElement(ref.current);
+      if (ref.current) {
+        // Clear previous highlighting classes
+        ref.current.removeAttribute("data-highlighted");
+        ref.current.className = `hljs language-${language}`;
+        hljs.highlightElement(ref.current);
+      }
     })();
-  }, [code]);
+  }, [code, language]);
 
   return (
     <pre className={className}>
