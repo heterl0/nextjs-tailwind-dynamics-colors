@@ -1,10 +1,13 @@
-// components/CodeBlockClient.tsx
 "use client";
 
 import { useEffect, useRef } from "react";
-type Props = { code: string; className?: string };
+type Props = {
+  code: string;
+  className?: string;
+  language: "css" | "typescript";
+};
 
-export default function CodeBlockClient({ code, className }: Props) {
+export default function CodeBlockClient({ code, className, language }: Props) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -21,7 +24,7 @@ export default function CodeBlockClient({ code, className }: Props) {
 
   return (
     <pre className={className}>
-      <code ref={ref} className="hljs language-css">
+      <code ref={ref} className={`hljs language-${language}`}>
         {code}
       </code>
     </pre>
