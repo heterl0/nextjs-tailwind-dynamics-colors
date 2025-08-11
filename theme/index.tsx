@@ -4,23 +4,7 @@ import { useEffect, useState, useCallback, useMemo } from "react";
 import { EvaColor } from "./color";
 import { ColorContext } from "./color-context";
 import { toast } from "sonner";
-
-// Define error response type
-interface ErrorResponse {
-  error: string;
-  message: string;
-}
-
-// Type guard to check if response is an error
-function isErrorResponse(data: unknown): data is ErrorResponse {
-  return (
-    !!data &&
-    typeof data === "object" &&
-    data !== null &&
-    "error" in data &&
-    "message" in data
-  );
-}
+import { handleApiResponse } from "../lib/api-response-wrapper";
 
 const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentColor, setCurrentColor] = useState<EvaColor>({
@@ -44,30 +28,32 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const res = await fetch(`/api/get-color?theme=${color}`);
 
-      // Check if the response is ok
-      if (!res.ok) {
-        const errorData = await res.json();
-        if (isErrorResponse(errorData)) {
-          toast.error(errorData.message);
-          return;
-        } else {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-      }
+      // Custom validation function for EvaColor
+      const validateEvaColor = (data: unknown): data is EvaColor => {
+        if (!data || typeof data !== "object") return false;
+        const colorData = data as Record<string, unknown>;
 
-      const data = await res.json();
+        return (
+          "primary" in colorData &&
+          "danger" in colorData &&
+          "info" in colorData &&
+          "success" in colorData &&
+          "warning" in colorData &&
+          Array.isArray(colorData.primary) &&
+          Array.isArray(colorData.danger) &&
+          Array.isArray(colorData.info) &&
+          Array.isArray(colorData.success) &&
+          Array.isArray(colorData.warning)
+        );
+      };
 
-      // Check if the response is an error response
-      if (isErrorResponse(data)) {
-        throw new Error(data.message);
-      }
+      // Use the response wrapper with custom validation
+      const colorData = await handleApiResponse<EvaColor>(
+        res,
+        "EvaColor",
+        validateEvaColor
+      );
 
-      // Type guard to ensure data is EvaColor
-      if (!data || typeof data !== "object" || !("primary" in data)) {
-        throw new Error("Invalid response format from server");
-      }
-
-      const colorData: EvaColor = data;
       setCurrentColor(colorData);
 
       if (document && colorData) {
@@ -85,6 +71,7 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       const errorMessage =
         e instanceof Error ? e.message : "An unknown error occurred";
       setError(errorMessage);
+      toast.error(errorMessage);
       console.error("Error setting primary color:", e);
     } finally {
       setIsLoading(false);
