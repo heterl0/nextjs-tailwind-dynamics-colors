@@ -152,7 +152,7 @@ const evaColor: EvaColor = ${JSON.stringify(convertedColors, null, 2)};`;
     <Dialog>
       <DialogTrigger asChild>
         {trigger || (
-          <Button variant="outline" size="sm" className="gap-2">
+          <Button variant="outline" size="sm" className="cursor-pointer gap-2">
             <Code className="h-4 w-4" />
             View Code
           </Button>
