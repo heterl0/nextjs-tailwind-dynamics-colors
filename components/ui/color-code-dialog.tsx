@@ -31,6 +31,7 @@ export function ColorCodeDialog({
 }: ColorCodeDialogProps) {
   const [format, setFormat] = useState<ColorFormat>("hex");
   const [copied, setCopied] = useState(false);
+  const [copiedTS, setCopiedTS] = useState(false);
 
   const convertColor = (color: string, targetFormat: ColorFormat): string => {
     const tc = tinycolor(color);
@@ -107,8 +108,13 @@ const evaColor: EvaColor = ${JSON.stringify(convertedColors, null, 2)};`;
         typeof navigator.clipboard.writeText === "function"
       ) {
         await navigator.clipboard.writeText(text);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        if (language === "typescript") {
+          setCopiedTS(true);
+          setTimeout(() => setCopiedTS(false), 2000);
+        } else {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        }
         toast.success("Code copied to clipboard!");
         return;
       }
@@ -125,8 +131,13 @@ const evaColor: EvaColor = ${JSON.stringify(convertedColors, null, 2)};`;
 
       try {
         document.execCommand("copy");
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        if (language === "typescript") {
+          setCopiedTS(true);
+          setTimeout(() => setCopiedTS(false), 2000);
+        } else {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        }
         toast.success("Code copied to clipboard!");
       } catch (fallbackErr) {
         console.error("Fallback copy failed:", fallbackErr);
