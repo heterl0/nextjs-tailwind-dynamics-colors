@@ -209,7 +209,7 @@ const evaColor: EvaColor = ${JSON.stringify(convertedColors, null, 2)};`;
                     onClick={handleCopyTS}
                     className="group h-8 w-8 cursor-pointer p-0"
                   >
-                    {copied ? (
+                    {copiedTS ? (
                       <Check className="h-4 w-4 text-green-500" />
                     ) : (
                       <Copy className="h-4 w-4 text-gray-400 group-hover:text-gray-900" />
