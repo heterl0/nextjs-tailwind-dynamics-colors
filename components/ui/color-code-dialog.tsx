@@ -15,6 +15,8 @@ import { Button } from "@/components/ui/button";
 import { Code, Copy, Check } from "lucide-react";
 import Color from "colorjs.io";
 import { ScrollArea } from "./scroll-area";
+import CodeBlockClient from "../code-block/code-block-client";
+import { toast } from "sonner";
 
 interface ColorCodeDialogProps {
   currentColor: EvaColor;
@@ -48,7 +50,7 @@ export function ColorCodeDialog({
     }
   };
 
-  const generateCode = (): string => {
+  const generateCode = (language: "css" | "typescript"): string => {
     const convertedColors: EvaColor = {
       primary: currentColor.primary.map((color) => convertColor(color, format)),
       success: currentColor.success.map((color) => convertColor(color, format)),
@@ -60,6 +62,10 @@ export function ColorCodeDialog({
     const generateCSSVariables = () => {
       const variables: string[] = [];
       Object.entries(convertedColors).forEach(([colorType, colorArray]) => {
+        variables.push(
+          `  
+    /* ${colorType.charAt(0).toUpperCase() + colorType.slice(1)} */`
+        );
         colorArray.forEach((color, index) => {
           const shade = (index + 1) * 100;
           variables.push(`  --${colorType}-${shade}: ${color};`);
@@ -68,7 +74,14 @@ export function ColorCodeDialog({
       return variables.join("\n");
     };
 
-    return `// EvaColor interface
+    switch (language) {
+      case "css":
+        return `// CSS Custom Properties
+:root {
+${generateCSSVariables()}
+}`;
+      case "typescript":
+        return `// EvaColor interface
 type EvaColor = {
   primary: string[];
   danger: string[];
@@ -78,29 +91,68 @@ type EvaColor = {
 };
 
 // Generated EvaColor object
-const evaColor: EvaColor = ${JSON.stringify(convertedColors, null, 2)};
-
-// CSS Custom Properties
-:root {
-${generateCSSVariables()}
-}`;
+const evaColor: EvaColor = ${JSON.stringify(convertedColors, null, 2)};`;
+      default:
+        return "";
+    }
   };
 
-  const copyToClipboard = async () => {
+  const copyToClipboard = async (language: "css" | "typescript") => {
+    const text = generateCode(language);
+
     try {
-      await navigator.clipboard.writeText(generateCode());
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      // Check if clipboard API is available
+      if (
+        navigator.clipboard &&
+        typeof navigator.clipboard.writeText === "function"
+      ) {
+        await navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        toast.success("Code copied to clipboard!");
+        return;
+      }
+
+      // Fallback for older browsers or insecure contexts
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      textArea.style.top = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        document.execCommand("copy");
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        toast.success("Code copied to clipboard!");
+      } catch (fallbackErr) {
+        console.error("Fallback copy failed:", fallbackErr);
+        toast.error("Copy failed. Please manually select and copy the code.");
+      } finally {
+        document.body.removeChild(textArea);
+      }
     } catch (err) {
       console.error("Failed to copy to clipboard:", err);
+      toast.error("Copy failed. Please manually select and copy the code.");
     }
+  };
+
+  const handleCopyCSS = () => {
+    copyToClipboard("css");
+  };
+
+  const handleCopyTS = () => {
+    copyToClipboard("typescript");
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         {trigger || (
-          <Button variant="outline" size="sm" className="gap-2">
+          <Button variant="outline" size="sm" className="cursor-pointer gap-2">
             <Code className="h-4 w-4" />
             View Code
           </Button>
@@ -154,19 +206,43 @@ ${generateCSSVariables()}
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={copyToClipboard}
-                    className="h-8 w-8 p-0"
+                    onClick={handleCopyTS}
+                    className="group h-8 w-8 cursor-pointer p-0"
+                  >
+                    {copiedTS ? (
+                      <Check className="h-4 w-4 text-green-500" />
+                    ) : (
+                      <Copy className="h-4 w-4 text-gray-400 group-hover:text-gray-900" />
+                    )}
+                  </Button>
+                </div>
+                <CodeBlockClient
+                  className="overflow-x-auto rounded-lg bg-gray-900 text-sm text-gray-100"
+                  code={generateCode("typescript")}
+                  language="typescript"
+                />
+              </div>
+
+              <div className="relative">
+                <div className="absolute top-2 right-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleCopyCSS}
+                    className="group h-8 w-8 cursor-pointer p-0"
                   >
                     {copied ? (
                       <Check className="h-4 w-4 text-green-500" />
                     ) : (
-                      <Copy className="h-4 w-4" />
+                      <Copy className="h-4 w-4 text-gray-400 group-hover:text-gray-900" />
                     )}
                   </Button>
                 </div>
-                <pre className="overflow-x-auto rounded-lg bg-gray-900 p-4 text-sm text-gray-100">
-                  <code>{generateCode()}</code>
-                </pre>
+                <CodeBlockClient
+                  className="overflow-x-auto rounded-lg bg-gray-900 text-sm text-gray-100"
+                  code={generateCode("css")}
+                  language="css"
+                />
               </div>
             </div>
           </div>
